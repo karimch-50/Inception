@@ -1,0 +1,74 @@
+docker build -t <nameOfTheImage> <locationOfDockerfile>:
+    used to create the image 
+
+docker run --name <name of the conatiner> -p <exposed port>:<port> <name of the image>:
+    used the create the conatiner with a specific name 
+    and port based on the given image
+
+docker images:
+    used to list all docker images
+
+docker ps:
+    used to list all running containers
+
+docker ps -a:
+    used to list all containers
+
+docker stop <name of the container>:
+    used to stop the runnign container
+
+docker start <name of the container>:
+    used to start a created container
+    by default start the container in detach mode
+    so it doesn't block the terminal
+
+docker image rm <name of the image>:
+    used to delete image
+    if u got this error [unable to remove repository reference]
+        it's probably because of it's been used by a container
+        se we need to add {-f} to the command above
+
+docker container rm <name of the conatiner>:
+    used to delete the contianer
+
+
+docker system prune -a:
+    used to delete all images and containers and volumes 
+
+
+docker run -d  -p 8080:80 myapp:
+    -d for deatched mode
+
+docker stats <name of the container>:
+    to get the status of that container
+
+docker info:
+    all docker info
+
+docker info:
+
+docker run -d --name mariadbnew -e MARIADB_ROOT_PASSWORD=1234 -v mariavolume:/var/lib/mysql mariadb:
+    -v option to give a name to the created volume
+
+1. Bridge Network:
+    docker network create my-bridge-network
+    docker run -d --name container1 --network my-bridge-network my-image
+    docker run -d --name container2 --network my-bridge-network my-image
+
+2. Host Network:
+    docker run -d --network host my-image
+
+3. None Network:
+    docker run -d --network none my-image
+
+4. Overlay Network:
+    docker network create -d overlay my-overlay-network
+    docker service create --name my-service --network my-overlay-network my-image
+
+5. Macvlan Network:
+    docker network create -d macvlan --subnet=192.168.1.0/24 --gateway=192.168.1.1 -o parent=eth0 my-macvlan-network
+    docker run -d --network my-macvlan-network my-image
+
+
+docker compose up -d:
+    
