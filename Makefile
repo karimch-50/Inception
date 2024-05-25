@@ -37,10 +37,10 @@ nginx_logs:
 	docker-compose -f srcs/docker-compose.yml logs nginx
 
 wordpress_logs:
-	docker-compose -f srcs/docker-compose.yml logs nginx
+	docker-compose -f srcs/docker-compose.yml logs wordpress
 
 mariadb_logs:
-	docker-compose -f srcs/docker-compose.yml logs nginx
+	docker-compose -f srcs/docker-compose.yml logs mariadb
 
 .PHONY: up down stop start restart status logs
 
