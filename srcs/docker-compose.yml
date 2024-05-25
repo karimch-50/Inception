@@ -1,30 +1,30 @@
 version: "3"
 services:
-
-  mysql_database:
-    image: mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: wp_db
-      MYSQL_USER: wp_user
-      MYSQL_PASSWORD: 1234
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "8111:8081"
+      # - "443:443"
+    restart:
+      always
     volumes:
-      - mysql:/var/lib/mysql
+      - wp:/var/www/html/wordpress
 
   wordpress:
-    depends_on:
-      - mysql_database
-    image: wordpress:latest
-    restart: always
-    ports:
-      - "8080:80"
-    environment:
-      WORDPRESS_DB_HOST: mysql_database:3306
-      WORDPRESS_DB_USER: wp_user
-      WORDPRESS_DB_PASSWORD: 1234
-      WORDPRESS_DB_NAME: wp_db
+    container_name: wordpress
+    build: ./requirements/wordpress
+    restart:
+      always
     volumes:
-      ["./:/var/www/html"]
+      - wp:/var/www/html/wordpress
+
 volumes:
-  mysql: {}
+    wp:
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: /home/karim/data
