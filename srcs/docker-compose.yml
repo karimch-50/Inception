@@ -12,14 +12,30 @@ services:
       always
     volumes:
       - wp:/var/www/html/wordpress
+    networks:
+      - network
 
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
+    depends_on:
+      - mariadb
     restart:
       always
     volumes:
       - wp:/var/www/html/wordpress
+    networks:
+      - network
+  
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    restart:
+      always
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - network
 
 volumes:
     wp:
@@ -27,4 +43,15 @@ volumes:
       driver_opts:
         type: none
         o: bind
-        device: /home/karim/data
+        device: /home/karim/data/wp
+    database:
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: /home/karim/data/database
+
+networks:
+  network:
+    name: network
+    driver: bridge

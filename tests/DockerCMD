@@ -75,9 +75,28 @@ docker run -d --name mariadbnew -e MARIADB_ROOT_PASSWORD=1234 -v mariavolume:/va
     docker run -d --network my-macvlan-network my-image
 
 
-docker compose up -d:
+# docker compose up -d:
     
 
+====>common docker volume commands:
+
+docker volume create :
+    Creates a new named volume.
+
+docker volume ls:
+    Lists all the volumes that are currently available on the host machine.
+
+docker volume rm:
+    Removes a named volume.
+
+docker volume inspect:
+    Provides detailed information about a named volume.
+
+docker run -v:
+    Mounts a host directory or file into a container.
+
+docker run --mount:
+    Mounts a named volume or a host directory or file into a container.
 
 
 # diff between ENTRYPOINT and CMD?

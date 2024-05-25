@@ -5,7 +5,7 @@ WORKDIR /var/www/html
 RUN apk update && \
     apk --no-cache add \
     php7 php7-fpm \
-    wget tar
+    wget tar curl
 
 COPY tools/script.sh /
 
