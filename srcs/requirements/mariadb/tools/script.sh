@@ -4,30 +4,16 @@
 mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql
 
-# Install MariaDB
-mariadb-install-db --user=mysql --datadir=/var/lib/mysql --skip-test-db
+sed -i "s/127.0.0.1/0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
 
-# echo "
-# USE mysql;
-# FLUSH PRIVILEGES;
-# ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_RANDOM_ROOT_PASSWORD}';
-# CREATE DATABASE ${DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
-# CREATE USER '${DB_USER}'@'%' IDENTIFIED by '${USER_PASS}';
-# GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';
-# FLUSH PRIVILEGES;" > init_db.sql
-
-
-echo "
-USE mysql;
+service mariadb start
+mariadb <<-EOF
+CREATE DATABASE wordpress;
+CREATE USER 'kchaouki' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'kchaouki'@'%';
 FLUSH PRIVILEGES;
-ALTER USER 'root'@'localhost' IDENTIFIED BY '1234';
-CREATE DATABASE wordpress CHARACTER SET utf8 COLLATE utf8_general_ci;
-CREATE USER 'wp_user'@'%' IDENTIFIED by '1234';
-GRANT ALL PRIVILEGES ON wordpress.* TO 'wp_user'@'%';
-FLUSH PRIVILEGES;" > init_db.sql
+EOF
 
-mariadbd --user=mysql --bootstrap < /init_db.sql
+service mariadb stop
 
-rm -f /init_db.sql
-
-mariadbd --user=mysql --bind-address=0.0.0.0
+exec mariadbd

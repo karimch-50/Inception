@@ -1,31 +1,22 @@
-FROM alpine:3.14
+FROM debian:bullseye
 
 WORKDIR /var/www/html
 
-RUN apk --no-cache add \
-    php7 \
-    php7-fpm \
-    php7-mysqli \
-    php7-json \
-    php7-openssl \
-    php7-curl \
-    php7-zlib \
-    php7-xml \
-    php7-phar \
-    php7-intl \
-    php7-dom \
-    php7-xmlreader \
-    php7-xmlwriter \
-    php7-simplexml \
-    php7-tokenizer \
-    php7-ctype \
-    php7-session \
-    php7-mbstring \
-    postfix \
-    wget curl tar 
+RUN mkdir -p /run/php
 
-COPY tools/script.sh /
+RUN apt update
 
-EXPOSE 9000
+RUN apt install php-fpm -y
 
-ENTRYPOINT ["/bin/sh", "/script.sh"]
+RUN apt install php-mysql -y
+
+RUN apt install curl -y
+
+RUN apt install mariadb-client -y
+
+COPY tools/script.sh /usr/local/bin/wp_script
+
+RUN chmod +x /usr/local/bin/wp_script
+
+# exec php-fpm7.4 -F
+CMD ["wp_script"]

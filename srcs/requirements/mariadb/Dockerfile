@@ -1,10 +1,15 @@
-FROM debian:bookworm
+FROM debian:bullseye
 
 WORKDIR /
 
-RUN apt update && apt upgrade -y && \
-    apt install mariadb-server -y
+RUN apt update
 
-COPY tools/script.sh /
+RUN apt upgrade -y
 
-ENTRYPOINT ["/bin/sh", "/script.sh"]
+RUN apt install mariadb-server -y
+
+COPY tools/script.sh /usr/local/bin/db_script
+
+RUN chmod +x /usr/local/bin/db_script
+
+CMD ["db_script"]

@@ -1,17 +1,11 @@
-FROM alpine:latest
+FROM debian:bullseye
 
 WORKDIR /
 
-RUN apk update && apk add nginx
+RUN  apt update -y && apt install nginx -y
 
-COPY index.html /
+COPY config/config.conf /etc/nginx/sites-available/default
 
-COPY config/config.conf /etc/nginx/http.d
+# RUN ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/nginx
 
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
-# EXPOSE 443
-
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
-# CMD ["nginx -g deamon-off"]
+CMD ["nginx", "-g", "daemon off;"]

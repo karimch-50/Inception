@@ -1,6 +1,11 @@
 docker build -t <nameOfTheImage> <locationOfDockerfile>:
     used to create the image 
 
+
+
+docker run --name nginxCont -p 8111:8111 :
+
+
 docker run --name <name of the conatiner> -p <exposed port>:<port> <name of the image>:
     used the create the conatiner with a specific name 
     and port based on the given image

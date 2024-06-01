@@ -1,69 +1,58 @@
 #!/bin/bash
 
+Red='\033[0;31m'          # Red
+Green='\033[0;32m'        # Green
+Yellow='\033[0;33m'       # Yellow
+NC='\033[0m' # No Color
 
+mkdir -p wordpress
 
+cd wordpress
 
 #need to find a way to get the exact ip for the current container
-sed -i "s|listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|g" /etc/php7/php-fpm.d/www.conf
+sed -i "s|listen = /run/php/php7.4-fpm.sock|listen = 0.0.0.0:9000|" /etc/php/7.4/fpm/pool.d/www.conf
 
-# wget https://wordpress.org/latest.tar.gz
-# tar xvzf latest.tar.gz
-# rm latest.tar.gz
+if [ -f "/var/www/html/wordpress/wp-config.php" ]; then
+    echo "${Yellow} Wordpress already has been setupped !!${NC}"
+else
+    echo "${Yellow}Downloading wp-cli ...${NC}"
+    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    echo "${Green}wp-cli is downloaded !!${NC}"
 
-# cd /var/www/html/wordpress && rm -rf *
+    chmod +x wp-cli.phar
 
+    mv wp-cli.phar /usr/local/bin/wp
 
-# #install wp-cli
-# curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-# chmod +x wp-cli.phar 
-# mv wp-cli.phar /usr/local/bin/wp
+    # Download wordpress with a specific language
+    echo "${Yellow}Downloading WordPress ...${NC}"
+    wp core download --locale=en_US --allow-root
+    echo "${Green}WordPress downloaded !!${NC}"
 
-# pwd
-# sed -i "s/username_here/wp_user/g" wp-config-sample.php
-# sed -i "s/password_here/1234/g" wp-config-sample.php
-# sed -i "s/localhost/mariadb/g" wp-config-sample.php
-# sed -i "s/database_name_here/wordpress/g" wp-config-sample.php
-# cp  wp-config-sample.php wp-config.php
+    wp config create --dbname=wordpress \
+                    --dbuser=kchaouki \
+                    --dbhost=mariadb \
+                    --dbpass=1234 \
+                    --dbprefix="wp_" \
+                    --allow-root \
+                    --skip-check #the database connection is not checked
 
-
-# # wp core install --allow-root --url=${DOMAINE_NAME} --title=${TITLE} --admin_user=${ADMIN_USER} --admin_password=${ADMIN_PASS} --admin_email=${ADMIN_EMAIL}
-
-# wp core install --allow-root --url=kchaouki.com \
-#                 --title=test --admin_user=karim \
-#                 --admin_password=1234 --admin_email=karim@gmail.com
-
-# exec php-fpm7 -F
-
+    # Checks the current status of the database.
+    # wp db check
 
 
-# Download WordPress
-wget https://wordpress.org/latest.tar.gz
-tar xvzf latest.tar.gz
-rm latest.tar.gz
+    # Install WordPress
+    wp core install --allow-root \
+                    --title="This is my website" \
+                    --admin_user=karim \
+                    --admin_password=1234 \
+                    --admin_email=karim@gmail.com \
+                    --url=kchaouki.42.fr
 
-cd /var/www/html/wordpress
+    # echo "Creating users..."
+    wp user create wp_user wp_user@gmail.com \
+        --role=editor \
+        --user_pass=1234 \
+        --allow-root
+fi
 
-# Modify configuration
-sed -i "s/username_here/wp_user/g" wp-config-sample.php
-sed -i "s/password_here/1234/g" wp-config-sample.php
-sed -i "s/localhost/mariadb/g" wp-config-sample.php
-sed -i "s/database_name_here/wordpress/g" wp-config-sample.php
-
-cp wp-config-sample.php wp-config.php
-
-# Install wp-cli
-curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-chmod +x wp-cli.phar 
-mv wp-cli.phar /usr/local/bin/wp
-
-# Install WordPress
-wp core install --allow-root --url=kchaouki.com \
-                --title=test --admin_user=karim \
-                --admin_password=1234 --admin_email=karim@gmail.com
-
-echo "Creating users..."
-wp user create wp_user wp_user@gmail.com \
-    --role=editor --user_pass=1234 \
-    --path=/var/www/html/wordpress --allow-root
-
-exec php-fpm7 -F
+exec php-fpm7.4 -F
