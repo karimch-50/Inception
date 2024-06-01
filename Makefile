@@ -6,7 +6,7 @@
 #    By: kchaouki <kchaouki@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/18 16:27:43 by kchaouki          #+#    #+#              #
-#    Updated: 2024/05/18 16:30:20 by kchaouki         ###   ########.fr        #
+#    Updated: 2024/06/02 00:50:11 by kchaouki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,13 +34,12 @@ logs:
 	@docker-compose -f srcs/docker-compose.yml logs -f
 
 nginx_logs:
-	docker-compose -f srcs/docker-compose.yml logs nginx
+	@docker-compose -f srcs/docker-compose.yml logs nginx
 
 wordpress_logs:
-	docker-compose -f srcs/docker-compose.yml logs wordpress
+	@docker-compose -f srcs/docker-compose.yml logs wordpress
 
 mariadb_logs:
-	docker-compose -f srcs/docker-compose.yml logs mariadb
+	@docker-compose -f srcs/docker-compose.yml logs mariadb
 
 .PHONY: up down stop start restart status logs
-
