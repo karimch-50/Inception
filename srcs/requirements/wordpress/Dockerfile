@@ -21,4 +21,4 @@ RUN chmod +x /usr/local/bin/wp_script
 ENTRYPOINT ["wp_script"]
 
 # -F stay in the forgound
-CMD ["php-fpm7.4","-F"]
+CMD ["php-fpm7.4", "-F"]

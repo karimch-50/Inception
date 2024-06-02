@@ -51,15 +51,14 @@ volumes:
       driver_opts:
         type: none
         o: bind
-        device: /home/karim/Desktop/data/wordpress
+        device: /home/kchaouki/data/wordpress
     db_data:
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: /home/karim/Desktop/data/database
+        device: /home/kchaouki/data/database
 
 networks:
   inception_network:
-    name: inception_network
     driver: bridge

@@ -10,25 +10,27 @@
 #                                                                              #
 # **************************************************************************** #
 
-all : init up
+all : up
 
 init:
 	bash srcs/requirements/tools/script.sh
 
-up : 
-	@docker-compose -f srcs/docker-compose.yml up -d
+up : init
+	@docker-compose -f srcs/docker-compose.yml up --build -d
 
 down : 
 	@docker-compose -f srcs/docker-compose.yml down
 
-stop : 
-	@docker-compose -f srcs/docker-compose.yml stop
+re: clean down up
 
-start : 
-	@docker-compose -f srcs/docker-compose.yml start
+clean:
+	@docker volume rm $(docker volume ls -q) 2> /dev/null ; true
+	@rm -rf /home/kchaouki/data/database/*
+	@rm -rf /home/kchaouki/data/wordpress/*
 
-restart	:
-	@docker-compose -f srcs/docker-compose.yml restart
+fclean: clean
+	docker rm -f $(docker ps -qa)
+	docker rmi -f $(docker images -qa)
 
 status : 
 	@docker ps
@@ -45,4 +47,4 @@ wordpress_logs:
 mariadb_logs:
 	@docker-compose -f srcs/docker-compose.yml logs mariadb
 
-.PHONY: up down stop start restart status logs
+.PHONY: all init up down re clean fclean status logs nginx_logs wordpress_logs mariadb_logs
