@@ -13,20 +13,20 @@ cd wordpress
 sed -i "s|listen = /run/php/php7.4-fpm.sock|listen = 0.0.0.0:9000|" /etc/php/7.4/fpm/pool.d/www.conf
 
 if [ -f "/var/www/html/wordpress/wp-config.php" ]; then
-    echo "${Yellow} Wordpress already has been setupped !!${NC}"
+    echo -e "${Yellow} Wordpress already has been setupped !!${NC}"
 else
-    echo "${Yellow}Downloading wp-cli ...${NC}"
+    echo -e "${Yellow}Downloading wp-cli ...${NC}"
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-    echo "${Green}wp-cli is downloaded !!${NC}"
+    echo -e "${Green}wp-cli is downloaded !!${NC}"
 
     chmod +x wp-cli.phar
 
     mv wp-cli.phar /usr/local/bin/wp
 
     # Download wordpress with a specific language
-    echo "${Yellow}Downloading WordPress ...${NC}"
+    echo -e "${Yellow}Downloading WordPress ...${NC}"
     wp core download --locale=en_US --allow-root
-    echo "${Green}WordPress downloaded !!${NC}"
+    echo -e "${Green}WordPress downloaded !!${NC}"
 
     wp config create --dbname=$DATABASE_NAME \
                     --dbuser=$DB_USER_NAME \
