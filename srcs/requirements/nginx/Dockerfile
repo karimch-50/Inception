@@ -2,10 +2,14 @@ FROM debian:bullseye
 
 WORKDIR /
 
-RUN  apt update -y && apt install nginx -y
+RUN apt update -y && apt install -y nginx openssl
 
 COPY config/config.conf /etc/nginx/sites-available/default
 
-# RUN ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/nginx
+COPY tools/script.sh /usr/local/bin/server_script
+
+RUN chmod +x /usr/local/bin/server_script
+
+ENTRYPOINT ["server_script"]
 
 CMD ["nginx", "-g", "daemon off;"]

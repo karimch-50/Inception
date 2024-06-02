@@ -12,4 +12,6 @@ COPY tools/script.sh /usr/local/bin/db_script
 
 RUN chmod +x /usr/local/bin/db_script
 
-CMD ["db_script"]
+ENTRYPOINT ["db_script"]
+
+CMD ["mariadbd"]

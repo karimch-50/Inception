@@ -18,5 +18,7 @@ COPY tools/script.sh /usr/local/bin/wp_script
 
 RUN chmod +x /usr/local/bin/wp_script
 
-# exec php-fpm7.4 -F
-CMD ["wp_script"]
+ENTRYPOINT ["wp_script"]
+
+# -F stay in the forgound
+CMD ["php-fpm7.4","-F"]

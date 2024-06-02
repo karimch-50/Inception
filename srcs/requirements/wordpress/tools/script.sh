@@ -9,7 +9,6 @@ mkdir -p wordpress
 
 cd wordpress
 
-#need to find a way to get the exact ip for the current container
 sed -i "s|listen = /run/php/php7.4-fpm.sock|listen = 0.0.0.0:9000|" /etc/php/7.4/fpm/pool.d/www.conf
 
 if [ -f "/var/www/html/wordpress/wp-config.php" ]; then
@@ -36,10 +35,6 @@ else
                     --allow-root \
                     --skip-check #the database connection is not checked
 
-    # Checks the current status of the database.
-    # wp db check
-
-
     # Install WordPress
     wp core install --allow-root \
                     --title="$WP_TITLE" \
@@ -53,6 +48,7 @@ else
         --role=$WP_ROLE \
         --user_pass=$WP_USER_PASS \
         --allow-root
+    echo -e "${Green}=====> Wordpress have been installed and set up successfully${NC}"
 fi
 
-exec php-fpm7.4 -F
+exec "$@"

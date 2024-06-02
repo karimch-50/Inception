@@ -1,5 +1,10 @@
 #!/bin/bash
 
+Red='\033[0;31m'          # Red
+Green='\033[0;32m'        # Green
+Yellow='\033[0;33m'       # Yellow
+NC='\033[0m' # No Color
+
 # Set permissions on directories
 mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql
@@ -16,4 +21,6 @@ EOF
 
 service mariadb stop
 
-exec mariadbd
+echo -e "${Green}=====> Mariadb have been installed and set up successfully${NC}"
+
+exec "$@"
