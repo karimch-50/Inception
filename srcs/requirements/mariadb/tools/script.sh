@@ -8,9 +8,9 @@ sed -i "s/127.0.0.1/0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
 
 service mariadb start
 mariadb <<-EOF
-CREATE DATABASE wordpress;
-CREATE USER 'kchaouki' IDENTIFIED BY '1234';
-GRANT ALL PRIVILEGES ON wordpress.* TO 'kchaouki'@'%';
+CREATE DATABASE $DATABASE_NAME;
+CREATE USER '$DB_USER_NAME' IDENTIFIED BY '$DB_USER_PASS';
+GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DB_USER_NAME'@'%';
 FLUSH PRIVILEGES;
 EOF
 

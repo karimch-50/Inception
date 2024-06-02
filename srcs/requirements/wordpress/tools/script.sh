@@ -28,10 +28,10 @@ else
     wp core download --locale=en_US --allow-root
     echo "${Green}WordPress downloaded !!${NC}"
 
-    wp config create --dbname=wordpress \
-                    --dbuser=kchaouki \
+    wp config create --dbname=$DATABASE_NAME \
+                    --dbuser=$DB_USER_NAME \
                     --dbhost=mariadb \
-                    --dbpass=1234 \
+                    --dbpass=$DB_USER_PASS \
                     --dbprefix="wp_" \
                     --allow-root \
                     --skip-check #the database connection is not checked
@@ -42,16 +42,16 @@ else
 
     # Install WordPress
     wp core install --allow-root \
-                    --title="This is my website" \
-                    --admin_user=karim \
-                    --admin_password=1234 \
-                    --admin_email=karim@gmail.com \
-                    --url=kchaouki.42.fr
+                    --title="$WP_TITLE" \
+                    --admin_user=$WP_ADMIN \
+                    --admin_password=$WP_ADMIN_PASS \
+                    --admin_email=$WP_ADMIN_EMAIL \
+                    --url=$DOMAIN_NAME
 
     # echo "Creating users..."
-    wp user create wp_user wp_user@gmail.com \
-        --role=editor \
-        --user_pass=1234 \
+    wp user create $WP_USER_NAME $WP_USER_EMAIL \
+        --role=$WP_ROLE \
+        --user_pass=$WP_USER_PASS \
         --allow-root
 fi
 

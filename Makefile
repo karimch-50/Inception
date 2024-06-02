@@ -10,7 +10,10 @@
 #                                                                              #
 # **************************************************************************** #
 
-all : up
+all : init up
+
+init:
+	bash srcs/requirements/tools/script.sh
 
 up : 
 	@docker-compose -f srcs/docker-compose.yml up -d

@@ -10,6 +10,8 @@ services:
       # - "443:443"
     restart:
       always
+    env_file:
+      - .env
     volumes:
       - wp_data:/var/www/html/wordpress
     networks:
@@ -22,6 +24,8 @@ services:
       - mariadb
     restart:
       always
+    env_file:
+      - .env
     volumes:
       - wp_data:/var/www/html/wordpress
     networks:
@@ -32,6 +36,8 @@ services:
     build: ./requirements/mariadb
     restart:
       always
+    env_file:
+      - .env
     volumes:
       - db_data:/var/lib/mysql
     networks:
